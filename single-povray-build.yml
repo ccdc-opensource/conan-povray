@@ -99,15 +99,14 @@ steps:
     CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
 
 - task: ArtifactoryConan@1
-  displayName: 'Build ${{ parameters.package }} in Release mode'
+  displayName: 'Create ${{ parameters.package }} in Release mode'
   inputs:
-    conanCommand: 'Install'
-    pathOrReference: '${{ parameters.package }}/${{ parameters.package_version }}@'
+    conanCommand: 'Custom'
     # We build all missing packages, on purpose, dependencies must be tracked and obtained from the destination repository
     ${{ if contains(parameters.profile, 'windows') }}:
-      extraArguments: '--profile ${{ parameters.profile }}-release --profile ${{ parameters.custom_profile }} --remote=${{ parameters.destination_repository }} --build missing --build=${{ parameters.package }} --build cascade -s build_type=Release'
+      customArguments: 'create . --profile ${{ parameters.profile }}-release --profile ${{ parameters.custom_profile }} --remote=${{ parameters.destination_repository }} --build missing --build=${{ parameters.package }} --build cascade -s build_type=Release'
     ${{ if not(contains(parameters.profile, 'windows')) }}:
-      extraArguments: '--profile ${{ parameters.profile }} --profile ${{ parameters.custom_profile }} --remote=${{ parameters.destination_repository }} --build missing --build=${{ parameters.package }} --build cascade -s build_type=Release'
+      customArguments: 'create . --profile ${{ parameters.profile }} --profile ${{ parameters.custom_profile }} --remote=${{ parameters.destination_repository }} --build missing --build=${{ parameters.package }} --build cascade -s build_type=Release'
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)'
     conanUserHome: '$(Pipeline.Workspace)/.conan'
