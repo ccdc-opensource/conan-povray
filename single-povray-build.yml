@@ -76,13 +76,25 @@ steps:
     CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
 
 - task: ArtifactoryConan@1
-  displayName: 'Use ${{ parameters.destination_repository }}'
+  displayName: 'Use ccdc-3rdparty-conan'
   inputs:
     conanCommand: 'Add Remote'
-    remoteName: '${{ parameters.destination_repository }}'
+    remoteName: 'ccdc-3rdparty-conan'
     artifactoryService: 'devops-ccdc-3rd-party'
-    conanRepo: '${{ parameters.destination_repository }}'
+    conanRepo: 'ccdc-3rdparty-conan'
     purgeExistingRemotes: true
+    conanUserHome: '$(Pipeline.Workspace)/.conan'
+  env:
+    CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
+
+- task: ArtifactoryConan@1
+  displayName: 'Use public-conan-center'
+  inputs:
+    conanCommand: 'Add Remote'
+    remoteName: 'public-conan-center'
+    artifactoryService: 'devops-ccdc-3rd-party'
+    conanRepo: 'public-conan-center'
+    purgeExistingRemotes: false
     conanUserHome: '$(Pipeline.Workspace)/.conan'
   env:
     CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
