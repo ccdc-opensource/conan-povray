@@ -100,6 +100,18 @@ steps:
     CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
 
 - task: ArtifactoryConan@1
+  displayName: 'Use public-conan-bincrafters'
+  inputs:
+    conanCommand: 'Add Remote'
+    remoteName: 'public-conan-bincrafters'
+    artifactoryService: 'devops-ccdc-3rd-party'
+    conanRepo: 'public-conan-bincrafters'
+    purgeExistingRemotes: false
+    conanUserHome: '$(Pipeline.Workspace)/.conan'
+  env:
+    CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
+
+- task: ArtifactoryConan@1
   displayName: 'Export ${{ parameters.package }}/${{ parameters.package_version }}@'
   inputs:
     conanCommand: 'Custom'
