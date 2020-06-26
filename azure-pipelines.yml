@@ -1,0 +1,72 @@
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: ccdc-3rd-party/conan-azure-devops
+      ref: refs/heads/development
+
+variables:
+  package: povray
+  package_version: 3.7.0.8
+  destination_repository: ccdc-3rdparty-conan
+  macos_deployment_target: 10.13
+  custom_profile: povray-options
+
+jobs:
+- job: centos7_gcc9
+  pool:
+    vmImage: "ubuntu-latest"
+  # We use a container to run the build as we must be compatible with centos7's older glibc
+  container: rockdreamer/centos7-gcc9:latest
+  steps:
+    # No need to setup specific python, the container's python3 will be used
+    - template: single-povray-build.yml
+      parameters:
+        python: 'python3'
+        package: $( package )
+        package_version: $( package_version )
+        user: ""
+        channel: ""
+        profile: centos7-gcc9-x86_64
+        custom_profile: $( custom_profile )
+        destination_repository: $( destination_repository )
+
+- job: macos1015_xcode11
+  pool:
+    vmImage: "macOS-latest"
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: "3.8"
+      displayName: "Use latest python 3.8"
+    - template: single-povray-build.yml
+      parameters:
+        python: 'python'
+        package: $( package )
+        package_version: $( package_version )
+        user: ""
+        channel: ""
+        profile: macos-xcode11-x86_64
+        custom_profile: $( custom_profile )
+        destination_repository: $( destination_repository )
+        macos_deployment_target: $( macos_deployment_target )
+
+- job: win2019_vs2019
+  pool:
+    vmImage: "windows-2019"
+  steps:
+    - template: remove-interfering-tools-on-windows.yml@templates
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: "3.8"
+      displayName: "Use latest python 3.8"
+    - template: single-povray-build.yml
+      parameters:
+        python: 'python'
+        package: $( package )
+        package_version: $( package_version )
+        user: ""
+        channel: ""
+        profile: windows-msvc16-amd64
+        custom_profile: $( custom_profile )
+        destination_repository: $( destination_repository )

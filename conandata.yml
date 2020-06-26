@@ -1,0 +1,4 @@
+sources:
+  "3.7.0.8":
+    url: "https://github.com/POV-Ray/povray/archive/v3.7.0.8.zip"
+    sha256: "fe99ae9eb23e74e4b2823fd4995d8f3aa35df571638d0b15e18dc3faf86c1945"
