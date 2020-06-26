@@ -23,13 +23,13 @@ jobs:
     - template: single-povray-build.yml
       parameters:
         python: 'python3'
-        package: $( package )
-        package_version: $( package_version )
+        package: ${{ variables.package }}
+        package_version: ${{ variables.package_version }}
         user: ""
         channel: ""
         profile: centos7-gcc9-x86_64
-        custom_profile: $( custom_profile )
-        destination_repository: $( destination_repository )
+        custom_profile: ${{ variables.custom_profile }}
+        destination_repository: ${{ variables.destination_repository }}
 
 - job: macos1015_xcode11
   pool:
@@ -42,14 +42,14 @@ jobs:
     - template: single-povray-build.yml
       parameters:
         python: 'python'
-        package: $( package )
-        package_version: $( package_version )
+        package: ${{ variables.package }}
+        package_version: ${{ variables.package_version }}
         user: ""
         channel: ""
         profile: macos-xcode11-x86_64
-        custom_profile: $( custom_profile )
-        destination_repository: $( destination_repository )
-        macos_deployment_target: $( macos_deployment_target )
+        custom_profile: ${{ variables.custom_profile }}
+        destination_repository: ${{ variables.destination_repository }}
+        macos_deployment_target: ${{ variables.macos_deployment_target }}
 
 - job: win2019_vs2019
   pool:
@@ -63,10 +63,10 @@ jobs:
     - template: single-povray-build.yml
       parameters:
         python: 'python'
-        package: $( package )
-        package_version: $( package_version )
+        package: ${{ variables.package }}
+        package_version: ${{ variables.package_version }}
         user: ""
         channel: ""
         profile: windows-msvc16-amd64
-        custom_profile: $( custom_profile )
-        destination_repository: $( destination_repository )
+        custom_profile: ${{ variables.custom_profile }}
+        destination_repository: ${{ variables.destination_repository }}
