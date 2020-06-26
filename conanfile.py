@@ -20,17 +20,9 @@ class PovrayConan(ConanFile):
     def _source_subfolder(self):
         return "source_subfolder"
 
-    def configure(self):
-        del self.settings.compiler.cppstd
-        del self.settings.compiler.libcxx
-
-    # def build_requirements(self):
-    #     if self.settings.os == "Windows" and self.settings.compiler != "Visual Studio" and \
-    #        "CONAN_BASH_PATH" not in os.environ and tools.os_info.detect_windows_subsystem() != "msys2":
-    #         self.build_requires("msys2/20190524")
 
     def build_requirements(self):
-        self.build_requires("boost/1.73.0")
+        self.build_requires("boost/1.69.0")
         self.build_requires("zlib/1.2.11")
         self.build_requires("libpng/1.6.37")
         self.build_requires("libjpeg/9d")
@@ -84,7 +76,6 @@ class PovrayConan(ConanFile):
                 raise
 
     def _build_msvc(self):
-        # args = "DISTRIBUTION_MESSAGE_2=CCDC"
         msbuild = MSBuild(self)
         # msbuild.build_env.include_paths.append("mycustom/directory/to/headers")
         # msbuild.build_env.lib_paths.append("mycustom/directory/to/libs")
@@ -118,6 +109,9 @@ class PovrayConan(ConanFile):
             # tools.rmdir(os.path.join(self.package_folder, "lib", "pkgconfig"))
             # for la_file in glob.glob(os.path.join(self.package_folder, "lib", "*.la")):
             #     os.remove(la_file)
+
+    def package_id(self):
+        del self.info.settings.compiler
 
     def package_info(self):
         bin_path = os.path.join(self.package_folder, 'bin')
