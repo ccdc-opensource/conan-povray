@@ -35,6 +35,7 @@ class PovrayConan(ConanFile):
         self.build_requires("libpng/1.6.37")
         self.build_requires("libjpeg/9d")
         self.build_requires("libtiff/4.1.0")
+        self.build_requires("automake/1.16.1")
         if self.settings.os_build == 'Windows':
             self.build_requires('7zip/19.00')
 
