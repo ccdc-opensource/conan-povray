@@ -128,19 +128,19 @@ steps:
       ARTIFACTORY_API_KEY: $(artifactory.api.key)
       CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
 
-  - task: ArtifactoryConan@1
-    displayName: 'Test ${{ parameters.package }}/${{ parameters.package_version }}@'
-    inputs:
-      conanCommand: 'Custom'
-      ${{ if contains(parameters.profile, 'windows') }}:
-        customArguments: 'test test_package ${{ parameters.package }}/${{ parameters.package_version }}@ --profile ${{ parameters.profile }}-release --profile ${{ parameters.custom_profile }} -s build_type=Release'
-      ${{ if not(contains(parameters.profile, 'windows')) }}:
-        customArguments: 'test test_package ${{ parameters.package }}/${{ parameters.package_version }}@ --profile ${{ parameters.profile }} --profile ${{ parameters.custom_profile }} -s build_type=Release'
-      buildName: '$(Build.DefinitionName)'
-      buildNumber: '$(Build.BuildNumber)'
-      conanUserHome: '$(Pipeline.Workspace)/.conan'
-    env:
-      CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
+- task: ArtifactoryConan@1
+  displayName: 'Test ${{ parameters.package }}/${{ parameters.package_version }}@'
+  inputs:
+    conanCommand: 'Custom'
+    ${{ if contains(parameters.profile, 'windows') }}:
+      customArguments: 'test test_package ${{ parameters.package }}/${{ parameters.package_version }}@ --profile ${{ parameters.profile }}-release --profile ${{ parameters.custom_profile }} -s build_type=Release'
+    ${{ if not(contains(parameters.profile, 'windows')) }}:
+      customArguments: 'test test_package ${{ parameters.package }}/${{ parameters.package_version }}@ --profile ${{ parameters.profile }} --profile ${{ parameters.custom_profile }} -s build_type=Release'
+    buildName: '$(Build.DefinitionName)'
+    buildNumber: '$(Build.BuildNumber)'
+    conanUserHome: '$(Pipeline.Workspace)/.conan'
+  env:
+    CONAN_LOGGING_LEVEL: ${{ parameters.conan_logging_level }}
 
 - task: ArtifactoryConan@1
   displayName: 'Upload *'
